@@ -10,35 +10,51 @@ export const AuthContext = React.createContext({
 
 export default props => {
     const [signIn, setSignIn] = useState(false);
-    const [accessToken] = useState('3b6649047e32d6e9075cb7a4818d3cdebb43e4a9');
+    const [accessToken] = useState('6fe296f891b6eacefa2b840b5b5ab6224468d34c');
     const [repositories, setRepositories] = useState([]);
 
-    const getRepositories = async () => {
+    const getRepositories = async (userName) => {
         const { Octokit } = require("@octokit/core");
         const octokit = new Octokit({ auth: accessToken });
-        const response = await octokit.request('GET /user')
-        if (response.status === 200) {
-            const user = response.data.login;
-            const repoResponse = await octokit.request(`GET /users/${user}/repos`);
-            if (repoResponse.status === 200) {
-                return repoResponse.data
+
+        const repoResponse = await octokit.request(`GET /users/${userName}/repos`);
+        if (repoResponse.status === 200) {
+
+            return repoResponse.data;
+        }
+        else {
+            alert("user not found")
+        }
+
+
+    }
+
+    const setRepositoryData = async (userName, cb) => {
+        const data = await getRepositories(userName)
+        if (data.length) {
+            localStorage.setItem('token', accessToken)
+            if ('token' in localStorage) {
+                setSignIn(true)
+                setRepositories(data)
+                cb()
+
             }
+
+        }
+        else
+        {
+            alert("user no found")
         }
 
     }
 
-    const setRepositoryData = async()=>{
-        const data = await getRepositories()
-        setRepositories(data)
-    }
-
-    const loginHandeler = (cb) => {
-        localStorage.setItem('token',accessToken)
-        if ('token' in localStorage) {
-            setSignIn(true)
-            cb()
-            setRepositoryData()
+    const loginHandeler = (userName, cb) => {
+        if (userName === '') {
+            alert("username should not be empty")
+            return
         }
+
+        setRepositoryData(userName, cb)
 
     }
 
