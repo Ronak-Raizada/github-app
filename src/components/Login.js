@@ -86,6 +86,7 @@ export default function Login() {
                         Sign In
           </Button>
                 </form>
+                <a href="https://github.com/login/oauth/authorize?client_id=5a50a6cb1fcda4aefe22">Login with github</a>
             </div>
 
         </Container>

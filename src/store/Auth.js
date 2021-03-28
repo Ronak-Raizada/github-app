@@ -54,7 +54,8 @@ export default props => {
             return
         }
 
-        setRepositoryData(userName, cb)
+        
+      //  setRepositoryData(userName, cb)
 
     }
 
