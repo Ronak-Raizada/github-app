@@ -5,7 +5,6 @@ import React, { useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,11 +45,8 @@ export default function Login() {
     let history = useHistory();
     let location = useLocation();
     let { from } = location.state || { from: { pathname: "/" } };
-    const [userName, setUserName] = React.useState('');
 
-    const onChangeHandeler = (event)=>{
-        setUserName(event.target.value);
-    }
+   
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -62,31 +58,17 @@ export default function Login() {
                     Sign in
                 </Typography>
                 <form className={classes.form} noValidate>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Github User Name"
-                        name="username"
-                        autoComplete="username"
-                        autoFocus
-                        onChange={(event)=>onChangeHandeler(event)}
-                    />
-                   
                     <Button
                         type="button"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={() => login(userName, () => history.replace(from))}
+                        onClick={() => login(() => history.replace(from))}
                     >
-                        Sign In
+                        Sign In with Gighub
           </Button>
                 </form>
-                <a href="https://github.com/login/oauth/authorize?client_id=5a50a6cb1fcda4aefe22">Login with github</a>
             </div>
 
         </Container>

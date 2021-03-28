@@ -17,8 +17,9 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import Container from '@material-ui/core/Container';
 import MainAppBar from './AppBar'
-
+import Button from '@material-ui/core/Button';
 import { AuthContext } from '../store/Auth';
+import Detail from './Detail';
 const useStyles1 = makeStyles((theme) => ({
   root: {
     flexShrink: 0,
@@ -46,6 +47,8 @@ function TablePaginationActions(props) {
   const handleLastPageButtonClick = (event) => {
     onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
+
+  
 
   return (
     <div className={classes.root}>
@@ -93,7 +96,8 @@ const useStyles2 = makeStyles({
 
 export default function Home() {
   const repos = useContext(AuthContext).repos;
-  var moment = require('moment'); // require
+  // console.log(repos)
+  const moment = require('moment'); // require
 
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
@@ -111,9 +115,25 @@ export default function Home() {
   };
 
 
+  const [open, setOpen] = React.useState(false);
+  const [repoId, setRepoId] = React.useState('');
 
+  const handleClickOpen = (id) => {
+    setOpen(true);
+    setRepoId(id)
+  };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
 
+  const detailPage = ()=>{
+    if(open)
+    {
+      return <Detail open={open} handleClose={handleClose} id={repoId}/>
+    }
+    
+  }
 
   return (
     <React.Fragment>
@@ -126,20 +146,12 @@ export default function Home() {
                 <TableCell component="th" scope="row">
                   Name
                   </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  Description
-                  </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  Collaborators
-                  </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  Link to Github Repo
-                  </TableCell>
+
                 <TableCell style={{ width: 160 }} align="right">
                   Created Date
                   </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  Link to issues page
+                  Link to Github Repo
                   </TableCell>
               </TableRow>
             </TableHead>
@@ -147,26 +159,20 @@ export default function Home() {
               {(rowsPerPage > 0
                 ? repos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 : repos
-              ).map((row) => (
-                <TableRow key={row.name}>
+              ).map((repo) => (
+                <TableRow key={repo.id}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    <Button color="primary" onClick={()=>handleClickOpen(repo.id) }>{repo.name}</Button>
                   </TableCell>
                   <TableCell style={{ width: 160 }} align="right">
-                    {row.description}
+                    {moment(repo.created_at).format("DD-MMM-YYYY")}
                   </TableCell>
+
                   <TableCell style={{ width: 160 }} align="right">
-                    {row.collaborators_url}
+                    <a href={repo.clone_url} title="Link to Github Repo" target="_blank" rel="noreferrer">{repo.clone_url}</a>
                   </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    {row.clone_url}
-                  </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    {moment(row.created_at).format("DD-MMM-YYYY")}
-                  </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    {row.issues_url}
-                  </TableCell>
+
+
                 </TableRow>
               ))}
 
@@ -197,7 +203,7 @@ export default function Home() {
           </Table>
         </TableContainer>
       </Container>
-
+      {detailPage()}
     </React.Fragment>
   );
 }

@@ -10,7 +10,6 @@ import {
 import { AuthContext } from './store/Auth';
 import Home from './components/Home';
 import Login from './components/Login';
-import Path from './components/Path';
 
 
 
@@ -41,7 +40,6 @@ const App = () => {
             <Router>
                 <Switch>
                     <Route path="/login" component={Login} />
-                    <Route path="/path" component={Path} />
                     <PrivateRoute>
                         <Home />
                     </PrivateRoute>
