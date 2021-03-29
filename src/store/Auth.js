@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import socialMediaAuth from '../Auth/socialMediaAuth';
 import firebase from '../config/firebase-config';
 export const AuthContext = React.createContext({
@@ -31,15 +31,6 @@ export default props => {
 
     }
 
-    const setRepositoryData = async (userName, cb) => {
-        const data = await getRepositories(userName)
-        if (data.length) {
-            setRepositories(data)
-
-        }
-
-    }
-
     const loginHandeler = async (cb) => {
         const result = await socialMediaAuth()
         const credential = result.credential;
@@ -47,30 +38,30 @@ export default props => {
         if (credential) {
             const token = credential.accessToken;
             const user = result.additionalUserInfo.username;
-            if (token) {
 
-            }
             setAccessToken(token)
             localStorage.setItem('token', accessToken)
             if ('token' in localStorage) {
+                const data = await getRepositories(user)
+                if (data.length) {
+                    setRepositories(data)
+                }
                 setSignIn(true)
                 cb()
-                setRepositoryData(user, cb)
             }
-
         }
 
     }
 
-    const logOutHandeler = (cb) => {
-        firebase.auth().signOut().then(() => {
+    const logOutHandeler = async (cb) => {
+       await firebase.auth().signOut().then(() => {
+            console.log("sign out successfull")
             setSignIn(false)
             localStorage.removeItem('token')
             cb()
         }).catch((error) => {
             console.log(error)
         });
-
     }
 
     return <AuthContext.Provider value={{

@@ -34,50 +34,45 @@ export default function Detail(props) {
     const repos = useContext(AuthContext).repos;
     const selectedRepo = repos.find(repo => repo.id === props.id)
     const moment = require('moment'); // require
-    console.log(selectedRepo)
     return (
-        <div>
+        <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
+            <AppBar className={classes.appBar}>
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" onClick={props.handleClose} aria-label="close">
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
+                        {selectedRepo.name}
+                    </Typography>
 
-            <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
-                <AppBar className={classes.appBar}>
-                    <Toolbar>
-                        <IconButton edge="start" color="inherit" onClick={props.handleClose} aria-label="close">
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            {selectedRepo.name}
-                        </Typography>
-
-                    </Toolbar>
-                </AppBar>
-                <List>
-                    <ListItem button>
-                        <ListItemText primary="Repo Name" secondary={selectedRepo.name} />
-                    </ListItem>
-                    <Divider />
-                    <ListItem button>
-                        <ListItemText primary="Description" secondary={selectedRepo.description} />
-                    </ListItem>
-                    <Divider />
-                    <ListItem button>
-                        <ListItemText primary="Collaborators" secondary={selectedRepo.collaborators_url} />
-                    </ListItem>
-                    <Divider />
-                    <ListItem button>
-                        <ListItemText primary="Link to Github Repo" secondary={selectedRepo.git_url} />
-                    </ListItem>
-                    <Divider />
-                    <ListItem button>
-                        <ListItemText primary="Created Date" secondary={moment(selectedRepo.created_at).format("DD-MMM-YYYY")} />
-                    </ListItem>
-                    <Divider />
-                    <ListItem button>
-                        <ListItemText primary="Link to issues page on Github" secondary={selectedRepo.issues_url} />
-                    </ListItem>
-                    <Divider />
-                   
-                </List>
-            </Dialog>
-        </div>
+                </Toolbar>
+            </AppBar>
+            <List>
+                <ListItem>
+                    <ListItemText primary="Repo Name" secondary={selectedRepo.name || "--"} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemText primary="Description" secondary={selectedRepo.description || "--"} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemText primary="Collaborators" secondary={selectedRepo.collaborators_url || "--"} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemText primary="Link to Github Repo" secondary={selectedRepo.git_url || "--"} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemText primary="Created Date" secondary={moment(selectedRepo.created_at).format("DD-MMM-YYYY") || "--"} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemText primary="Link to issues page on Github" secondary={selectedRepo.issues_url || "--"} />
+                </ListItem>
+                <Divider />
+            </List>
+        </Dialog>
     );
 }

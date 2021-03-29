@@ -17,7 +17,6 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import Container from '@material-ui/core/Container';
 import MainAppBar from './AppBar'
-import Button from '@material-ui/core/Button';
 import { AuthContext } from '../store/Auth';
 import Detail from './Detail';
 const useStyles1 = makeStyles((theme) => ({
@@ -48,7 +47,7 @@ function TablePaginationActions(props) {
     onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
-  
+
 
   return (
     <div className={classes.root}>
@@ -127,12 +126,11 @@ export default function Home() {
     setOpen(false);
   };
 
-  const detailPage = ()=>{
-    if(open)
-    {
-      return <Detail open={open} handleClose={handleClose} id={repoId}/>
+  const detailPage = () => {
+    if (open) {
+      return <Detail open={open} handleClose={handleClose} id={repoId} />
     }
-    
+
   }
 
   return (
@@ -160,9 +158,9 @@ export default function Home() {
                 ? repos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 : repos
               ).map((repo) => (
-                <TableRow key={repo.id}>
-                  <TableCell component="th" scope="row">
-                    <Button color="primary" onClick={()=>handleClickOpen(repo.id) }>{repo.name}</Button>
+                <TableRow key={repo.id} >
+                  <TableCell component="th" scope="row" onClick={() => handleClickOpen(repo.id)} style={{ cursor: 'pointer' }}>
+                    {repo.name}
                   </TableCell>
                   <TableCell style={{ width: 160 }} align="right">
                     {moment(repo.created_at).format("DD-MMM-YYYY")}
@@ -171,8 +169,6 @@ export default function Home() {
                   <TableCell style={{ width: 160 }} align="right">
                     <a href={repo.clone_url} title="Link to Github Repo" target="_blank" rel="noreferrer">{repo.clone_url}</a>
                   </TableCell>
-
-
                 </TableRow>
               ))}
 
