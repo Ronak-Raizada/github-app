@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import socialMediaAuth from '../Auth/socialMediaAuth';
 import firebase from '../config/firebase-config';
 export const AuthContext = React.createContext({
